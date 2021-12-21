@@ -1,5 +1,7 @@
 package com.hs1;
 
+import com.hs1.exceptions.EncryptionException;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.security.InvalidAlgorithmParameterException;
@@ -22,8 +24,7 @@ public class Security {
             ivParameterSpec = generateIv();
             secretKey = generateKey(KEY_SIZE);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            throw new EncryptionException(e.getMessage(), e);
         }
     }
 

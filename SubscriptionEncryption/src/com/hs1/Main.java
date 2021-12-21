@@ -37,8 +37,7 @@ public class  Main {
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            throw new EncryptionException(e.getMessage(), e);
         }
     }
 
