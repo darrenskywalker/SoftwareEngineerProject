@@ -2,6 +2,7 @@ package com.hs1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hs1.exceptions.EncryptionException;
 import com.hs1.views.Subscription;
 import com.hsOne.SubscriptionChecker;
 import org.apache.commons.io.IOUtils;
@@ -45,11 +46,10 @@ public class  Main {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             var encodedData = IOUtils.toString(fileInputStream, "UTF-8");
-            var decodedData = Security.decode(encodedData);
-            return decodedData;
+            return Security.decode(encodedData);
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new EncryptionException(e.getMessage(), e);
         }
     }
 
@@ -62,7 +62,7 @@ public class  Main {
                 System.out.println("Name: " + name + "Is Subscribed: " + isSubscribed);
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new EncryptionException(e.getMessage(), e);
         }
     }
 }

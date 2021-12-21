@@ -9,15 +9,18 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 public class Security {
-    private final static String ALGORITHM = "AES/CBC/PKCS5Padding";
-    private final static int keySize = 256;
+    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static final int KEY_SIZE = 256;
     private static IvParameterSpec ivParameterSpec;
     private static SecretKey secretKey;
+
+    private Security() {
+    }
 
     static {
         try {
             ivParameterSpec = generateIv();
-            secretKey = generateKey(keySize);
+            secretKey = generateKey(KEY_SIZE);
         } catch (NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
