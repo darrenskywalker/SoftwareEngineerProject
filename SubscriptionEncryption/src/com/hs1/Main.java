@@ -1,8 +1,8 @@
 package com.hs1;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hs1.views.Subscription;
 import com.hsOne.SubscriptionChecker;
 import org.apache.commons.io.IOUtils;
 
@@ -14,12 +14,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class  Main {
 
     public static void main(String[] args) {
         SubscriptionChecker subscriptionChecker = new SubscriptionChecker();
-        var json = subscriptionChecker.getSubscriptions(1);
+        var results = subscriptionChecker.getSubscriptions(1);
+        var json = results;
         var file = new File("subscriptions.txt");
         encodeToFile(json, file);
         var decodedJson = decodeFromFile(file);
@@ -41,9 +43,10 @@ public class  Main {
 
     private static String decodeFromFile(final File file) {
         try {
-            FileInputStream fis = new FileInputStream(file);
-            var encodedData = IOUtils.toString(fis, "UTF-8");
-            return Security.decode(encodedData);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            var encodedData = IOUtils.toString(fileInputStream, "UTF-8");
+            var decodedData = Security.decode(encodedData);
+            return decodedData;
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException
                 | BadPaddingException | IllegalBlockSizeException | IOException e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -52,8 +55,8 @@ public class  Main {
 
     private static void printOutSubscriptions(final String decodedJson) {
         try {
-            var subscriptions = new ObjectMapper().readValue(decodedJson, SubscriptionsList.class);
-            subscriptions.getSubscriptions().forEach(sub -> {
+            var subscriptions = new ObjectMapper().readValue(decodedJson, Subscription[].class);
+            Arrays.stream(subscriptions).forEach(sub -> {
                 var name = sub.getName();
                 var isSubscribed = sub.isSubscribed();
                 System.out.println("Name: " + name + "Is Subscribed: " + isSubscribed);
