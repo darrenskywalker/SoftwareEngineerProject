@@ -28,7 +28,7 @@ public class Security {
         }
     }
 
-    public static String encode(String clearText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+    public static String encode(final String clearText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -38,7 +38,7 @@ public class Security {
                 .encodeToString(cipherText);
     }
 
-    public static String decode(String encodedText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+    public static String decode(final String encodedText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -48,7 +48,7 @@ public class Security {
         return new String(plainText);
     }
 
-    private static SecretKey generateKey(int keysize) throws NoSuchAlgorithmException {
+    private static SecretKey generateKey(final int keysize) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(keysize);
         return keyGenerator.generateKey();
